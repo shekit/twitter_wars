@@ -60,5 +60,51 @@ app.use(function(err, req, res, next) {
   });
 });
 
+// TWITTER STREAM
+
+var TwitterStreamChannels = require('twitter-stream-channels');
+
+var config = require('./config/config')
+
+var credentials = {
+  consumer_key: config.consumer_key,
+  consumer_secret: config.consumer_secret,
+  access_token: config.access_token,
+  access_token_secret: config.access_token_secret
+}
+
+var client = new TwitterStreamChannels(credentials);
+
+var channels = {
+}
+
+var stream = client.streamChannels({track:channels});
+
+function startStreamOne(channel,val){
+  stream.on(channel, function(tweet){
+    io.emit('one','yes');
+    console.log("Contestant one")
+  })
+}
+
+function startStreamTwo(channel){
+  stream.on(channel, function(tweet){
+    io.emit('two', 'yes');
+    console.log("Contestant Two")
+  })
+}
+
+io.on('connection', function(socket){
+  console.log("a user connected: "+ socket.id);
+
+  channels[socket.id+1] = ['bieber'];
+  channels[socket.id+2] = ['trump'];
+
+  console.log(channels)
+
+  socket.on('disconnect', function(){
+    console.log("a user disconnected");
+  })
+})
 
 module.exports = app;

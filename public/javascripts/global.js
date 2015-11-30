@@ -1,6 +1,8 @@
 $(document).ready(function(){
 	console.log('hello')
 
+	var socket = io();
+
 	var contestantCount = 0;
 
 	$(".contestant").on('click', function(event){
