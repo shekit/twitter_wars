@@ -76,24 +76,52 @@ var credentials = {
 var client = new TwitterStreamChannels(credentials);
 
 var channels = {
-  "hi":"hi"
+  "hi":["hi"]
 }
 
-var stream = client.streamChannels({track:channels});
+var stream;// = client.streamChannels({track:channels});
 
-function startStreamOne(channel,val){
+function reloadStream(){
+  console.log("Reloaded stream")
+  stream = client.streamChannels({track:channels});
+}
+
+//stream.addListener()
+
+function processStreamOne(tweet){
+  io.emit('one','yes');
+  console.log("Contestant one")
+}
+
+function processStreamTwo(tweet){
+  io.emit('two','yes')
+  console.log("Contestant Two")
+}
+
+function startStreamOne(channel,val, socketId){
+  console.log(val)
+  stream.on(channel,processStreamOne)
+}
+
+function startStreamTwo(channel, val, socketId){
+  console.log(val);
+  stream.on(channel, processStreamTwo)
+}
+
+function startStreamOne2(channel, val, socketId){
+  console.log(val);
   stream.on(channel, function(tweet){
-    io.emit('one','yes');
-    console.log("Contestant one")
+    if(val == 'one'){
+      io.emit('one','yes');
+      console.log("Bieber")
+    }
+    if(val == 'two'){
+      io.emit('two', 'yes');
+      console.log("Trump")
+    }
   })
 }
 
-function startStreamTwo(channel){
-  stream.on(channel, function(tweet){
-    io.emit('two', 'yes');
-    console.log("Contestant Two")
-  })
-}
 
 io.on('connection', function(socket){
   console.log("a user connected: "+ socket.id);
@@ -102,10 +130,40 @@ io.on('connection', function(socket){
   channels[socket.id+2] = ['trump'];
 
   console.log(channels)
+  reloadStream();
+
+  socket.on('fight', function(msg){
+    console.log("START FIGHT")
+    //stream.start();
+    startStreamOne('channels/'+socket.id+1, "one","a")
+    startStreamTwo('channels/'+socket.id+2, "two","d")
+    //startStreamTwo('channels/'+socket.id+2, "6")
+  })
+
+  socket.on('stop', function(msg){
+    console.log("Stop Fight");
+    removeStreamOne(socket.id+1);
+    removeStreamTwo(socket.id+2)
+  })
 
   socket.on('disconnect', function(){
     console.log("a user disconnected");
   })
 })
+
+function removeStreamOne(channel){
+  delete channels[channel];
+  stream.removeListener('channels/'+channel, processStreamOne)
+  console.log(channels);
+  console.log("STOP LISTENING")
+}
+
+function removeStreamTwo(channel){
+  delete channels[channel];
+  stream.removeListener('channels/'+channel, processStreamTwo)
+  console.log(channels);
+  console.log("STOP LISTENING")
+}
+
 
 module.exports = app;

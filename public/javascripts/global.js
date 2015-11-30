@@ -25,6 +25,7 @@ $(document).ready(function(){
 		}
 	})
 
+
 	$("#fight").on('click', function(event){
 		event.preventDefault();
 
@@ -50,5 +51,15 @@ $(document).ready(function(){
 		} else {
 			alert('select two contestants')
 		}
+	})
+
+	$("#socket-fight").on('click', function(event){
+		event.preventDefault();
+		socket.emit('fight','yes')
+	})
+
+	$("#socket-stop-fight").on('click', function(event){
+		event.preventDefault();
+		socket.emit('stop','yes')
 	})
 })
