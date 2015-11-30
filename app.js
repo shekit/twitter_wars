@@ -76,6 +76,7 @@ var credentials = {
 var client = new TwitterStreamChannels(credentials);
 
 var channels = {
+  "hi":"hi"
 }
 
 var stream = client.streamChannels({track:channels});
