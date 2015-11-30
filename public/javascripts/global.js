@@ -22,4 +22,28 @@ $(document).ready(function(){
 			console.log('TWO CONTESTANTS SELECTED')
 		}
 	})
+
+	$("#fight").on('click', function(event){
+		if(contestantCount == 2) {
+			var contestantOne = $(".contestant-one").attr('data-val');
+			var contestantTwo = $(".contestant-two").attr('data-val');
+
+			$.ajax({
+				"url": 'http://localhost:3000/fight',
+				"method": 'POST',
+				"data": {
+					'contestantOne':contestantOne,
+					'contestantTwo': contestantTwo
+				}
+			})
+			.done(function(resp){
+				console.log(resp)
+			})
+			.error(function(resp){
+				console.log("Error: "+resp)
+			})
+		} else {
+			alert('select two contestants')
+		}
+	})
 })
