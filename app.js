@@ -75,8 +75,10 @@ var credentials = {
 
 var client = new TwitterStreamChannels(credentials);
 
+var listeners = {};
+
 var channels = {
-  "hi":["hi"]
+  "hi":["kabukialal"]
 }
 
 var stream;// = client.streamChannels({track:channels});
@@ -88,19 +90,43 @@ function reloadStream(){
 
 //stream.addListener()
 
-function processStreamOne(tweet){
-  io.emit('one','yes');
-  console.log("Contestant one")
-}
 
 function processStreamTwo(tweet){
   io.emit('two','yes')
   console.log("Contestant Two")
 }
 
-function startStreamOne(channel,val, socketId){
+function startStream(channel,val, socketId){
   console.log(val)
-  stream.on(channel,processStreamOne)
+
+  function processStream(tweet){
+    if(val == 'one'){
+      io.emit('one','yes')
+      console.log("Contestant one")
+    }
+    if(val == 'two'){
+      io.emit('two','yes')
+      console.log("Contestant two")
+    }
+  }
+
+  stream.on(channel,processStream);
+
+  listeners[socketId] = processStream;
+  
+}
+
+function removeStream(channel, socketId){
+  delete channels[channel];
+  stream.removeListener('channels/'+channel, listeners[socketId])
+  console.log(channels);
+  console.log("STOP LISTENING")
+}
+
+function processStreamOne(tweet,val){
+  console.log(arguments.length)
+  io.emit('one','yes');
+  console.log("Contestant one")
 }
 
 function startStreamTwo(channel, val, socketId){
@@ -135,15 +161,17 @@ io.on('connection', function(socket){
   socket.on('fight', function(msg){
     console.log("START FIGHT")
     //stream.start();
-    startStreamOne('channels/'+socket.id+1, "one","a")
-    startStreamTwo('channels/'+socket.id+2, "two","d")
+    //startStreamOne('channels/'+socket.id+1, "one","a")
+    //startStreamTwo('channels/'+socket.id+2, "two","d")
     //startStreamTwo('channels/'+socket.id+2, "6")
+    startStream('channels/'+socket.id+1, "one","a")
+    startStream('channels/'+socket.id+2, "two","b")
   })
 
   socket.on('stop', function(msg){
     console.log("Stop Fight");
-    removeStreamOne(socket.id+1);
-    removeStreamTwo(socket.id+2)
+    removeStream(socket.id+1, "a");
+    removeStream(socket.id+2, "b")
   })
 
   socket.on('disconnect', function(){
