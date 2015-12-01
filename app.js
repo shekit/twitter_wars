@@ -96,11 +96,15 @@ function startStream(channel,val, socketId, socket){
   function processStream(tweet){
     if(val == 'one'){
       io.to(socket).emit('one','yes')
-      console.log("Contestant one: "+channels[socketId][0]);
+      if(channels[socketId]){
+        console.log("Contestant one: "+channels[socketId][0]);
+      }
     }
     if(val == 'two'){
       io.to(socket).emit('two','yes')
-      console.log("Contestant two: "+channels[socketId][0]);
+      if(channels[socketId]){
+        console.log("Contestant two: "+channels[socketId][0]);
+      }
     }
   }
 
