@@ -89,18 +89,18 @@ function reloadStream(){
 }
 
 
-function startStream(channel,val, socketId){
+function startStream(channel,val, socketId, socket){
   console.log("START STREAM")
 
   // make this a closure so it can access parent function vars
   function processStream(tweet){
     if(val == 'one'){
-      io.emit('one','yes')
-      console.log("Contestant one")
+      io.to(socket).emit('one','yes')
+      console.log("Contestant one: "+channels[socketId][0]);
     }
     if(val == 'two'){
-      io.emit('two','yes')
-      console.log("Contestant two")
+      io.to(socket).emit('two','yes')
+      console.log("Contestant two: "+channels[socketId][0]);
     }
   }
 
@@ -136,8 +136,8 @@ io.on('connection', function(socket){
   socket.on('fight', function(msg){
     console.log("START FIGHT")
     // start the stream for the two contestants
-    startStream('channels/'+socketId+1, "one",socketId+'1')
-    startStream('channels/'+socketId+2, "two",socketId+'2')
+    startStream('channels/'+socketId+1, "one",socketId+'1', socketId)
+    startStream('channels/'+socketId+2, "two",socketId+'2', socketId)
   })
 
   socket.on('stop', function(msg){
