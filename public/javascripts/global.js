@@ -16,11 +16,15 @@ $(document).ready(function(){
 
 	var prediction = null;
 
+	var scoreOne = $("#scoreOne");
+	var scoreTwo = $("#scoreTwo");
 
+	resetScores();
 
 	$(".contestant").on('click', function(event){
 		event.preventDefault();
 		var self = $(this);
+		resetScores();
 
 		if(self.hasClass('contestant-one')){
 			//contestantCount--;
@@ -158,7 +162,6 @@ $(document).ready(function(){
 
 	$("body").on('click','.bet', function(event){
 		event.preventDefault();
-
 		prediction = $(this).attr('data-val')
 		console.log(prediction)
 	})
@@ -176,17 +179,27 @@ $(document).ready(function(){
 
 	socket.on('one', function(msg){
 		contestantOneScore++;
+		scoreOne.html(contestantOneScore);
 	})
 
 	socket.on('two', function(msg){
 		contestantTwoScore++;
-
+		scoreTwo.html(contestantTwoScore);
 	})
 
 	function updatePredictionValues(){
 		console.log("update")
 		$(".bet-one").html(contestantOne);
 		$(".bet-two").html(contestantTwo);
+	}
+
+	function resetScores(){
+		console.log('resetScore')
+		contestantOneScore = 0;
+		contestantTwoScore = 0;
+		scoreOne.html(contestantOneScore);
+		scoreTwo.html(contestantTwoScore);
+		prediction = null;
 	}
 
 	function checkWinner(){
