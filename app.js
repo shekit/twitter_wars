@@ -77,6 +77,7 @@ var client = new TwitterStreamChannels(credentials);
 
 var listeners = {};
 
+//enter random word other stream throws an error with empty channel
 var channels = {
   "hi":["kabukialal"]
 }

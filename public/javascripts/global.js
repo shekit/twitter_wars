@@ -11,32 +11,118 @@ $(document).ready(function(){
 	var contestantOneScore = 0;
 	var contestantTwoScore = 0;
 
+	var contestantOneSelected = false;
+	var contestantTwoSelected = false;
+
 	var prediction = null;
+
+
 
 	$(".contestant").on('click', function(event){
 		event.preventDefault();
+		var self = $(this);
 
-		if(contestantCount < 2){	
-			contestantCount++;
-			console.log('Contestant Count: ', contestantCount);
-
-			var value = $(this).attr('data-val')
-
-			if(contestantCount==1){
-				$(this).addClass('contestant-one')
-			} else if(contestantCount == 2){
-				$(this).addClass('contestant-two')
-			}
-			console.log(value)
-		} else {
-			console.log('TWO CONTESTANTS SELECTED')
+		if(self.hasClass('contestant-one')){
+			//contestantCount--;
+			console.log("Removing contestant one");
+			contestantOneSelected = false;
+			self.removeClass('contestant-one')
+			return
+		} else if(self.hasClass('contestant-two')){
+			//contestantCount--;
+			console.log("Removing contestant two");
+			contestantTwoSelected = false;
+			self.removeClass('contestant-two')
+			return
 		}
+
+
+		if(contestantOneSelected == false && contestantTwoSelected == false){
+			contestantOneSelected = true;
+			self.addClass('contestant-one');
+			console.log('Selected contestant one')
+			return
+		} else if(contestantOneSelected == true && contestantTwoSelected == false){
+			contestantTwoSelected = true;
+			self.addClass('contestant-two');
+			console.log('Selected contestant two')
+			return
+		} else if(contestantOneSelected == false && contestantTwoSelected == true){
+			contestantOneSelected = true;
+			self.addClass('contestant-one');
+			console.log('Re selected contestant one')
+			return
+		} else {
+			console.log("2 contestants selected")
+			return
+		}
+
+
+		// if(contestantCount < 2){	
+		// 	contestantCount++;
+		// 	console.log('Contestant Count: ', contestantCount);
+		// 	var self = $(this);
+		// 	var value = self.attr('data-val')
+
+		// 	if(contestantCount==1 && contestantOneSelected==false){
+		// 		// do this if its the first time selecting contestant one
+		// 		contestantOneSelected = true;
+		// 		self.addClass('contestant-one')
+		// 	} else if(contestantCount == 2 && contestantTwoSelected == false){
+		// 		// do this if its the first time selecting contestant two
+		// 		contestantTwoSelected = true;
+		// 		self.addClass('contestant-two')
+		// 	} else if(contestantCount==1 && contestantOneSelected==true){
+		// 		// do this if it contestant two is unselected and a new one is selected 
+		// 		contestantTwoSelected = true;
+		// 		self.addClass('contestant-two')
+		// 	} else if(contestantCount == 1 && contestantTwoSelected == true){
+		// 		// do this if it contestant one is unselected and a new one is selected
+		// 		contestantOneSelected = true;
+		// 		self.addClass('contestant-one')
+		// 	}
+		// 	console.log(value)
+			
+		// } else {
+		// 	console.log('TWO CONTESTANTS SELECTED')
+		// }
+
 	})
 
+	
+
+	// $("body").on('click','.fighter', function(event){
+	// 	event.preventDefault();
+
+	// 	var self = $(this)
+	// 	var contestantName = self.attr('data-val')
+
+	// 	if(self.hasClass('contestant-one')){
+	// 		contestantCount--;
+	// 		contestantOneSelected = false;
+	// 		self.removeClass('.contestant-one')
+	// 	}
+	// 	var contestant1 = $(this).attr('data-val');
+	// 	contestantCount--;
+	// 	contestantOneSelected = false;
+	// 	$(this).removeClass('.contestant-one');
+	// 	console.log("removed: "+contestant1)
+	// 	console.log("Contestant count: "+contestantCount)
+	// })
+
+	// $("body").on('click','.contestant-two', function(event){
+	// 	event.preventDefault();
+	// 	var contestant2 = $(this).attr('data-val');
+	// 	contestantCount--;
+	// 	contestantTwoSelected = false;
+	// 	$(this).removeClass('.contestant-two');
+	// 	console.log("removed: "+contestant2)
+	// 	console.log("Contestant count: "+contestantCount)
+	// })
 
 	$("#fight").on('click', function(event){
 		event.preventDefault();
-		if(contestantCount == 2){
+		if(contestantOneSelected && contestantTwoSelected){
 			contestantOne = $(".contestant-one").attr('data-val');
 			contestantTwo = $(".contestant-two").attr('data-val');
 			socket.emit('contestants',{'contestantOne':contestantOne,'contestantTwo': contestantTwo})
