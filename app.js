@@ -84,21 +84,15 @@ var channels = {
 var stream;// = client.streamChannels({track:channels});
 
 function reloadStream(){
-  console.log("Reloaded stream")
+  console.log("RELOADED STREAM")
   stream = client.streamChannels({track:channels});
 }
 
-//stream.addListener()
-
-
-function processStreamTwo(tweet){
-  io.emit('two','yes')
-  console.log("Contestant Two")
-}
 
 function startStream(channel,val, socketId){
-  console.log(val)
+  console.log("START STREAM")
 
+  // make this a closure so it can access parent function vars
   function processStream(tweet){
     if(val == 'one'){
       io.emit('one','yes')
@@ -112,66 +106,44 @@ function startStream(channel,val, socketId){
 
   stream.on(channel,processStream);
 
+  //create a ref to it in the object so you can remove it later in removeListener
   listeners[socketId] = processStream;
   
 }
 
 function removeStream(channel, socketId){
+  console.log("REMOVE CHANNEL")
   delete channels[channel];
   stream.removeListener('channels/'+channel, listeners[socketId])
   console.log(channels);
   console.log("STOP LISTENING")
 }
 
-function processStreamOne(tweet,val){
-  console.log(arguments.length)
-  io.emit('one','yes');
-  console.log("Contestant one")
-}
-
-function startStreamTwo(channel, val, socketId){
-  console.log(val);
-  stream.on(channel, processStreamTwo)
-}
-
-function startStreamOne2(channel, val, socketId){
-  console.log(val);
-  stream.on(channel, function(tweet){
-    if(val == 'one'){
-      io.emit('one','yes');
-      console.log("Bieber")
-    }
-    if(val == 'two'){
-      io.emit('two', 'yes');
-      console.log("Trump")
-    }
-  })
-}
 
 
 io.on('connection', function(socket){
   console.log("a user connected: "+ socket.id);
+  var socketId = socket.id;
 
-  channels[socket.id+1] = ['bieber'];
-  channels[socket.id+2] = ['trump'];
-
-  console.log(channels)
-  reloadStream();
+  socket.on('contestants', function(msg){
+    console.log("GOT CONTESTANTS")
+    channels[socketId+'1'] = [msg.contestantOne];
+    channels[socketId+'2'] = [msg.contestantTwo];
+    console.log(channels)
+    reloadStream();
+  })
 
   socket.on('fight', function(msg){
     console.log("START FIGHT")
-    //stream.start();
-    //startStreamOne('channels/'+socket.id+1, "one","a")
-    //startStreamTwo('channels/'+socket.id+2, "two","d")
-    //startStreamTwo('channels/'+socket.id+2, "6")
-    startStream('channels/'+socket.id+1, "one","a")
-    startStream('channels/'+socket.id+2, "two","b")
+    // start the stream for the two contestants
+    startStream('channels/'+socketId+1, "one",socketId+'1')
+    startStream('channels/'+socketId+2, "two",socketId+'2')
   })
 
   socket.on('stop', function(msg){
     console.log("Stop Fight");
-    removeStream(socket.id+1, "a");
-    removeStream(socket.id+2, "b")
+    removeStream(socketId+'1', socketId+'1');
+    removeStream(socketId+'2', socketId+'2')
   })
 
   socket.on('disconnect', function(){

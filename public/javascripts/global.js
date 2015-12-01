@@ -28,9 +28,15 @@ $(document).ready(function(){
 
 	$("#fight").on('click', function(event){
 		event.preventDefault();
-
+		if(contestantCount == 2){
+			var contestantOne = $(".contestant-one").attr('data-val');
+			var contestantTwo = $(".contestant-two").attr('data-val');
+			socket.emit('contestants',{'contestantOne':contestantOne,'contestantTwo': contestantTwo})
+		} else {
+			alert('select contestants')
+		}
 		//only make request if two contestants are selected
-		if(contestantCount == 2) {
+		/*if(contestantCount == 2) {
 			var contestantOne = $(".contestant-one").attr('data-val');
 			var contestantTwo = $(".contestant-two").attr('data-val');
 
@@ -50,7 +56,7 @@ $(document).ready(function(){
 			})
 		} else {
 			alert('select two contestants')
-		}
+		}*/
 	})
 
 	$("#socket-fight").on('click', function(event){
