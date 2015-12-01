@@ -120,6 +120,8 @@ function removeStream(channel, socketId){
   delete channels[channel];
   stream.removeListener('channels/'+channel, listeners[socketId])
   console.log(channels);
+  // delete listener from obj
+  delete listeners[socketId];
   console.log("STOP LISTENING")
 }
 
@@ -147,27 +149,21 @@ io.on('connection', function(socket){
   socket.on('stop', function(msg){
     console.log("Stop Fight");
     removeStream(socketId+'1', socketId+'1');
-    removeStream(socketId+'2', socketId+'2')
+    removeStream(socketId+'2', socketId+'2');
   })
 
   socket.on('disconnect', function(){
     console.log("a user disconnected");
+    // do only if user disconnects without stopping fight
+    // this will exist only if removestream hasnt been called already
+    if(channels[socketId+'1']){
+      console.log("FIGHT WAS STILL ON, DO CLEAN UP")
+      removeStream(socketId+'1', socketId+'1');
+      removeStream(socketId+'2', socketId+'2');
+    }
   })
 })
 
-function removeStreamOne(channel){
-  delete channels[channel];
-  stream.removeListener('channels/'+channel, processStreamOne)
-  console.log(channels);
-  console.log("STOP LISTENING")
-}
-
-function removeStreamTwo(channel){
-  delete channels[channel];
-  stream.removeListener('channels/'+channel, processStreamTwo)
-  console.log(channels);
-  console.log("STOP LISTENING")
-}
 
 
 module.exports = app;
