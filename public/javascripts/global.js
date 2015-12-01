@@ -27,12 +27,14 @@ $(document).ready(function(){
 			console.log("Removing contestant one");
 			contestantOneSelected = false;
 			self.removeClass('contestant-one')
+			console.log("REshow contestants");
 			return
 		} else if(self.hasClass('contestant-two')){
 			//contestantCount--;
 			console.log("Removing contestant two");
 			contestantTwoSelected = false;
 			self.removeClass('contestant-two')
+			console.log("REshow contestants");
 			return
 		}
 
@@ -46,6 +48,7 @@ $(document).ready(function(){
 			contestantTwoSelected = true;
 			self.addClass('contestant-two');
 			console.log('Selected contestant two')
+			console.log("Hide the other things or blur them out");
 			return
 		} else if(contestantOneSelected == false && contestantTwoSelected == true){
 			contestantOneSelected = true;
@@ -57,7 +60,7 @@ $(document).ready(function(){
 			return
 		}
 
-
+	})
 		// if(contestantCount < 2){	
 		// 	contestantCount++;
 		// 	console.log('Contestant Count: ', contestantCount);
@@ -87,7 +90,6 @@ $(document).ready(function(){
 		// 	console.log('TWO CONTESTANTS SELECTED')
 		// }
 
-	})
 
 	
 
