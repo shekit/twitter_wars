@@ -3,6 +3,7 @@ extends layout
 block content
   h1 Twitter Wars
   p Let's fight
+  p Step 0: Select 2 contestants
   ul
     li
       a(href="#", class='contestant', data-val='bieber') Bieber
@@ -13,16 +14,20 @@ block content
     li
       a(href='#', class='contestant', data-val='obama') Obama
   br
-  a(href='#',id='fight') Fight
+  span Step 1:
+  a(href='#',id='fight') Contestants Selected
   br
-  a(href="#", id='socket-fight') Socket Fight
-  br
-  a(href="#", id='socket-stop-fight') Stop Fight
-  br
-  p Prediction
-  br
+  p Step 2: Place Your Bet
   a(href='#', class='bet bet-one', data-val='contestantOne') Contestant One&nbsp;
   span(id='scoreOne') la
   br
   a(href='#', class='bet bet-two', data-val='contestantTwo') Contestant Two&nbsp;
   span(id="scoreTwo") la
+  br
+  br
+  span Step 3:
+  a(href="#", id='socket-fight') Start Fight
+  br
+  span Step 4:
+  a(href="#", id='socket-stop-fight') Stop Fight
+  
