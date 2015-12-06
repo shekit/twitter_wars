@@ -5,6 +5,7 @@ var router = express.Router();
 
 router.post('/fight', function(req, res, next){
 	//render page with the fight scene
+	// not working
 	res.render('fight',{'contestantOne':req.body.contestantOne,'contestantTwo':req.body.contestantTwo});
 })
 
