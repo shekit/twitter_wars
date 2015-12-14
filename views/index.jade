@@ -7,6 +7,7 @@ block content
         div(class='col-md-12 text-center')
           h1
             img(src='/images/logo.png', width='400')
+          h3 Choose your Fighters
       div(class='row')
         div(class='col-md-4')
         div(class='col-md-4')
@@ -34,6 +35,7 @@ block content
         div(class='col-md-12 text-center')
           h1
             img(src='/images/logo.png', width='400')
+          h3 Pick your Winner
         div(class='row')
           div(class='col-md-4')
           div(class='col-md-4')
@@ -54,30 +56,22 @@ block content
       div(class='row')
         div(class='col-md-4')
         div(class='col-md-4')
-          div(id='matchWrapper')
-            img(src='/images/logo.png', class='fight-logo')
-            h4(class='contestantOneScore') 0
-            h4(class='contestantTwoScore') 0
-            div(class='match-img contestant-one-img')
-            div(class='match-img contestant-two-img')
+          div(id='match-wrapper')
+            img(src='/images/logo.png', width='400',class='center-block fight-logo')
+            h4(id='scoreOne',class='contestantOneScore') 0
+            h5(class='vs') vs
+            h4(id='scoreTwo',class='contestantTwoScore') 0
+            img(src='',class='match-img contestant-one-img')
+            img(src='',class='match-img contestant-two-img')
         div(class='col-md-4')
-
-
-  span Step 1:
-  a(href='#',id='fight') Confirm Selection
-  br
-  p Step 2: Place Your Bet
-  a(href='#', class='bet bet-one', data-val='contestantOne') Contestant One&nbsp;
-  span(id='scoreOne') 0
-  br
-  a(href='#', class='bet bet-two', data-val='contestantTwo') Contestant Two&nbsp;
-  span(id="scoreTwo") 0
-  br
-  br
-  span Step 3:
-  a(href="#", id='socket-fight') Start Fight
-  br
-  br
-  span Step 4:
-  a(href="#", id='socket-stop-fight') Stop Fight
+      div(class='row')
+        div(class='col-md-4')
+        div(class='col-md-4')
+          h3(class='countdown-timer text-center') 0
+        div(class='col-md-4')
+      div(class='row')
+        div(class='col-md-4')
+        div(class='col-md-4')
+          a(href='#', id='rematch', class='btn btn-default btn-lg btn-block fight-btn') Pick another Fight
+        div(class='col-md-4')
   

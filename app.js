@@ -113,16 +113,18 @@ function startStream(channel,val, socketId, socket){
 
   //create a ref to it in the object so you can remove it later in removeListener
   listeners[socketId] = processStream;
-  
+  console.log("TTYPEEEE: "+typeof(listeners[socketId]));
 }
 
-function removeStream(channel, socketId){
+function removeStream(channel){
   console.log("REMOVE CHANNEL")
+  console.log(channel)
+  
+  stream.removeListener('channels/'+channel, listeners[channel])
   delete channels[channel];
-  stream.removeListener('channels/'+channel, listeners[socketId])
   console.log(channels);
   // delete listener from obj
-  delete listeners[socketId];
+  delete listeners[channel];
   console.log("STOP LISTENING")
 }
 
@@ -159,8 +161,8 @@ io.on('connection', function(socket){
     // this will exist only if removestream hasnt been called already
     if(channels[socketId+'1']){
       console.log("FIGHT WAS STILL ON, DO CLEAN UP")
-      removeStream(socketId+'1', socketId+'1');
-      removeStream(socketId+'2', socketId+'2');
+      removeStream(socketId+'1');
+      removeStream(socketId+'2');
     }
   })
 })

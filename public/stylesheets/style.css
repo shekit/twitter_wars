@@ -18,8 +18,13 @@
 }
 
 .miley {
-	background: url('../images/cyrus.png') no-repeat;
+	background: url('../images/miley.png') no-repeat;
 	background-size: contain;
+}
+
+h3 {
+	font-family: "Slackey", "Helvetica", "Arial", sans-serif;
+	margin-bottom: 30px;
 }
 
 .thumbnail {
@@ -54,4 +59,66 @@ a.thumbnail:hover{
 
 .selected:hover {
 	box-shadow: inset 0 0 0 2px #d22a2a;
+}
+
+#match-wrapper {
+	background: url('../images/yellow_bg.jpg') no-repeat center;
+	background-size: cover;
+	height: 600px;
+	position: relative;
+	overflow: hidden;
+}
+
+.match-img {
+	position: absolute;
+	bottom: -15px;
+	-webkit-filter: drop-shadow(7px 7px 3px rgba(0,0,0,0.5));
+    filter: url(#drop-shadow);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=10, OffY=-10, Color='#444')";
+    filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=10, OffY=-10, Color='#444')";
+}
+
+.contestant-one-img {
+	left:0px;
+	width: 250px;
+}
+
+.contestant-two-img {
+	right:0px;
+	width: 250px;
+}
+
+.vs {
+	position: absolute;
+	top: 200px;
+	left: 45%;
+	font-size: 36px;
+	text-align: center;
+	font-family: 'Slackey', 'Helvetica Neue','Arial',sans-serif;
+}
+
+#scoreOne, #scoreTwo {
+	font-family: 'Slackey', 'Helvetica Neue','Arial',sans-serif; 
+	position: absolute;
+	font-size: 50px;
+	font-weight: bold;
+	text-align: center;
+	top: 200px;
+}
+
+
+#scoreOne {
+	left:85px;
+}
+
+#scoreTwo {
+	right:85px;
+}
+
+.steptwo, .stepthree {
+	display: none;
+}
+
+#rematch {
+	display: none;
 }

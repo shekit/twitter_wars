@@ -22,7 +22,13 @@ $(document).ready(function(){
 	var scoreTwo = $("#scoreTwo");
 
 	var contestantOneImage;
-	var contestantTwoImage; 
+	var contestantTwoImage;
+
+	var stepOne = $(".stepone")
+	var stepTwo = $(".steptwo");
+	var stepThree= $(".stepthree") 
+
+	var countdownTimer = $(".countdown-timer")
 
 	resetScores();
 
@@ -144,6 +150,8 @@ $(document).ready(function(){
 			contestantTwo = $(".contestant-two").attr('data-val');
 			socket.emit('contestants',{'contestantOne':contestantOne,'contestantTwo': contestantTwo})
 			updatePredictionValues();
+			stepOne.hide();
+			stepTwo.fadeIn(300);
 		} else {
 			alert('select contestants')
 		}
@@ -187,33 +195,42 @@ $(document).ready(function(){
 	$("#socket-fight").on('click', function(event){
 		event.preventDefault();
 		// show the next scene
+		stepTwo.hide();
+		stepThree.fadeIn(200);
 		//grab the divs and change the images
 		contestantOneImage = $(".contestant-one-img")
 	    contestantTwoImage = $(".contestant-two-img")
-	    contestantOneImage.addClass(contestantOne);
-	    contestantTwoImage.addClass(contestantTwo);
+	    contestantOneImage.attr('src','/images/'+contestantOne+'.png');
+	    contestantTwoImage.attr('src','/images/'+contestantTwo+'.png');
 		socket.emit('fight','yes')
-		countdownCounter = 15;
+		countdownCounter = 14;
+		countdownTimer.html(countdownCounter);
 		setCountdown();
-		setMatchTimer();
+		//setMatchTimer();
 	})
 
 	function setCountdown(){
 		var countdown = setInterval(function(){
-			if(countdownCounter >= 0){
+			if(countdownCounter > 0){
 				countdownCounter--;
-				console.log("UPDATE TIMER")
+				console.log(countdownCounter);
+			} else if(countdownCounter == 0){
+				console.log("STOP THE MATCH!")
+				socket.emit('stop','yes');
+				checkWinner();
+				countdownTimer.hide();
+				$("#rematch").css({'display':'block'});
+				clearInterval(countdown);
 			}
-		})
+			countdownTimer.html(countdownCounter);
+		},1000)
 	}
 
-	//run match for 15 secs
-	function setMatchTimer(){
-		var timer = setTimeout(function(){
-			socket.emit('stop','yes');
-			checkWinner();
-		}, 15000)
-	}
+	$("body").on('click','#rematch', function(event){
+		event.preventDefault();
+		window.location.reload();
+	})
+
 
 	// Do it with a timer
 	// $("#socket-stop-fight").on('click', function(event){
@@ -253,15 +270,15 @@ $(document).ready(function(){
 
 	function checkWinner(){
 		if(contestantOneScore > contestantTwoScore && prediction == 'contestantOne'){
-			alert('you win contestant one won');
+			alert('You Win! contestant one won');
 		} else if(contestantOneScore < contestantTwoScore && prediction == 'contestantOne') {
-			alert('you lose contestant one lost')
+			alert('You Lose contestant one lost')
 		} else if(contestantTwoScore > contestantOneScore && prediction == 'contestantTwo') {
-			alert('you win, contestant two won')
+			alert('You Win, contestant two won')
 		} else if(contestantTwoScore < contestantOneScore && prediction == 'contestantTwo') {
-			alert('you lose contestant two lost')
+			alert('You Lose contestant two lost')
 		} else {
-			alert('its a tie!')
+			alert("it's a tie!");
 		}
 
 		console.log('CONTESTANT ONE SCORE: '+contestantOneScore);
