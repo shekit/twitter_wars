@@ -14,10 +14,15 @@ $(document).ready(function(){
 	var contestantOneSelected = false;
 	var contestantTwoSelected = false;
 
+	var countdownCounter = 0;
+
 	var prediction = null;
 
 	var scoreOne = $("#scoreOne");
 	var scoreTwo = $("#scoreTwo");
+
+	var contestantOneImage;
+	var contestantTwoImage; 
 
 	resetScores();
 
@@ -26,18 +31,24 @@ $(document).ready(function(){
 		var self = $(this);
 		resetScores();
 
+		if(!self.hasClass('selected') && !(contestantOneSelected && contestantTwoSelected)){
+			self.addClass('selected');
+		} else {
+			self.removeClass('selected');
+		}
+
 		if(self.hasClass('contestant-one')){
 			//contestantCount--;
 			console.log("Removing contestant one");
 			contestantOneSelected = false;
-			self.removeClass('contestant-one')
+			self.removeClass('contestant-one');
 			console.log("REshow contestants");
 			return
 		} else if(self.hasClass('contestant-two')){
 			//contestantCount--;
 			console.log("Removing contestant two");
 			contestantTwoSelected = false;
-			self.removeClass('contestant-two')
+			self.removeClass('contestant-two');
 			console.log("REshow contestants");
 			return
 		}
@@ -162,35 +173,73 @@ $(document).ready(function(){
 
 	$("body").on('click','.bet', function(event){
 		event.preventDefault();
+		if(!$(this).hasClass('selected')){
+			$(this).addClass('selected')
+			
+		} else {
+			$(this).removeClass('selected');
+		}
 		prediction = $(this).attr('data-val')
+		
 		console.log(prediction)
 	})
 
 	$("#socket-fight").on('click', function(event){
 		event.preventDefault();
+		// show the next scene
+		//grab the divs and change the images
+		contestantOneImage = $(".contestant-one-img")
+	    contestantTwoImage = $(".contestant-two-img")
+	    contestantOneImage.addClass(contestantOne);
+	    contestantTwoImage.addClass(contestantTwo);
 		socket.emit('fight','yes')
+		countdownCounter = 15;
+		setCountdown();
+		setMatchTimer();
 	})
 
-	$("#socket-stop-fight").on('click', function(event){
-		event.preventDefault();
-		socket.emit('stop','yes');
-		checkWinner();
-	})
+	function setCountdown(){
+		var countdown = setInterval(function(){
+			if(countdownCounter >= 0){
+				countdownCounter--;
+				console.log("UPDATE TIMER")
+			}
+		})
+	}
+
+	//run match for 15 secs
+	function setMatchTimer(){
+		var timer = setTimeout(function(){
+			socket.emit('stop','yes');
+			checkWinner();
+		}, 15000)
+	}
+
+	// Do it with a timer
+	// $("#socket-stop-fight").on('click', function(event){
+	// 	event.preventDefault();
+	// 	socket.emit('stop','yes');
+	// 	checkWinner();
+	// })
 
 	socket.on('one', function(msg){
 		contestantOneScore++;
 		scoreOne.html(contestantOneScore);
+		shake(contestantOneImage)
 	})
 
 	socket.on('two', function(msg){
 		contestantTwoScore++;
 		scoreTwo.html(contestantTwoScore);
+		shake(contestantTwoImage);
 	})
 
 	function updatePredictionValues(){
 		console.log("update")
-		$(".bet-one").html(contestantOne);
-		$(".bet-two").html(contestantTwo);
+		//$(".bet-one").html(contestantOne);
+		//$(".bet-two").html(contestantTwo);
+		$(".bet-one div").addClass(contestantOne);
+		$(".bet-two div").addClass(contestantTwo);
 	}
 
 	function resetScores(){
@@ -217,5 +266,13 @@ $(document).ready(function(){
 
 		console.log('CONTESTANT ONE SCORE: '+contestantOneScore);
 		console.log('CONTESTANT TWO SCORE: '+contestantTwoScore)
+	}
+
+	function shake(div){                                                                                                                                                                                            
+	    console.log("shake")                                                                       
+		div.css({'bottom':'0'});
+		setTimeout(function(){
+			div.css({'bottom':'-15px'})
+		},100)
 	}
 })

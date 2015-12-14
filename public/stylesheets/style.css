@@ -24,6 +24,11 @@
 
 .thumbnail {
 	border-radius: 0;
+	transition: none;
+}
+
+a.thumbnail:hover{
+	border-color: #bbb;
 }
 
 .btn {
@@ -44,9 +49,9 @@
 }
 
 .selected {
-	border-color: #d22a2a; 
+	box-shadow: inset 0 0 0 2px #d22a2a;
 }
 
 .selected:hover {
-	border-color:#d22a2a;
+	box-shadow: inset 0 0 0 2px #d22a2a;
 }
