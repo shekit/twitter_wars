@@ -1,8 +1,52 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.bieber, .obama, .trump, .miley {
+	min-height: 200px;
 }
 
-a {
-  color: #00B7FF;
+.bieber {
+	background: url('../images/bieber.png') no-repeat;
+	background-size: contain;
+}
+
+.obama {
+	background: url('../images/obama.png') no-repeat;
+	background-size: contain;
+}
+
+.trump {
+	background: url('../images/trump.png') no-repeat;
+	background-size: contain;
+}
+
+.miley {
+	background: url('../images/cyrus.png') no-repeat;
+	background-size: contain;
+}
+
+.thumbnail {
+	border-radius: 0;
+}
+
+.btn {
+	border-radius: 0;
+}
+
+.fight-btn{
+	background: #d22a2a;
+	color: yellow;
+	font-family: "Slackey", "Helvetica Neue", "Arial", sans-serif;
+	font-size: 30px;
+	border: none;
+}
+
+.fight-btn:hover {
+	background: yellow;
+	color: #d22a2a;
+}
+
+.selected {
+	border-color: #d22a2a; 
+}
+
+.selected:hover {
+	border-color:#d22a2a;
 }
