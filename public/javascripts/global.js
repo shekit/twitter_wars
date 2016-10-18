@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	console.log('hello')
 
-	var socket = io();
+	var socket = io({path:'/socket'});
 
 	var contestantCount = 0;
 
@@ -203,7 +203,7 @@ $(document).ready(function(){
 	    contestantOneImage.attr('src','/images/'+contestantOne+'.png');
 	    contestantTwoImage.attr('src','/images/'+contestantTwo+'.png');
 		socket.emit('fight','yes')
-		countdownCounter = 14;
+		countdownCounter = 5;
 		countdownTimer.html(countdownCounter);
 		setCountdown();
 		//setMatchTimer();

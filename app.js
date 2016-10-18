@@ -10,8 +10,8 @@ var users = require('./routes/users');
 
 var app = express();
 
-var socket_io = require('socket.io');
-var io = socket_io();
+
+var io = require('socket.io')(5000, {path:'/socket'})
 app.io = io;
 
 // view engine setup
