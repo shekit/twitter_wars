@@ -69,9 +69,34 @@ var config = require('./config/config')
 var credentials = {
   consumer_key: config.consumer_key,
   consumer_secret: config.consumer_secret,
-  access_token: config.access_token,
-  access_token_secret: config.access_token_secret
+  app_only_auth: true
 }
+
+// var Twit = require('twit');
+
+// var T = new Twit(credentials);
+
+// var firehose = T.stream('statuses/filter',{track: 'mango'})
+
+// firehose.on('connect', function(){
+//   console.log("connecting")
+// })
+
+// firehose.on('disconnect', function(){
+//   console.log("disconnected")
+// })
+
+// firehose.on('connected', function(){
+//   console.log("connected")
+// })
+
+// firehose.on('tweet', function(tweet){
+//   console.log(tweet)
+// })
+
+// firehose.on('limit', function(tweet){
+//   console.log(tweet)
+// })
 
 var client = new TwitterStreamChannels(credentials);
 

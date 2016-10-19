@@ -1,14 +1,14 @@
-.bieber, .obama, .trump, .miley {
+.clinton, .kaine, .trump, .pence {
 	min-height: 200px;
 }
 
-.bieber {
-	background: url('../images/bieber.png') no-repeat;
+.clinton {
+	background: url('../images/clinton.png') no-repeat;
 	background-size: contain;
 }
 
-.obama {
-	background: url('../images/obama.png') no-repeat;
+.kaine {
+	background: url('../images/kaine.png') no-repeat;
 	background-size: contain;
 }
 
@@ -17,8 +17,8 @@
 	background-size: contain;
 }
 
-.miley {
-	background: url('../images/miley.png') no-repeat;
+.pence {
+	background: url('../images/pence.png') no-repeat;
 	background-size: contain;
 }
 
